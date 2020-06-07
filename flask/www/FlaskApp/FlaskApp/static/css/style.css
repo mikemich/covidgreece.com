@@ -1,0 +1,249 @@
+.title {
+    height: 140px;
+    width: 550px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 55px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 70px;
+    position: absolute;
+    top: 114px;
+    left: 113px;
+    right: 1257px;
+    bottom: 726px;
+  }
+  .rectangleleft {
+    height: 980px;
+    width: 815px;
+    background-color: #337ADB;
+    top: 0px;
+    z-index: -1;
+    position: absolute;
+    left: 0px;
+  }
+  #myChart{
+      left: 970px;
+      position: absolute;
+      max-width: 840px;
+      max-height: 400px;
+      top: 361px;
+      right: 111px;
+  }
+  
+  .datasrc {
+    height: 28px;
+    width: 316px;
+    opacity: 0.89;
+    color: #8C8C8C;
+    font-family: Roboto;
+    font-size: 18px;
+    letter-spacing: 0;
+    line-height: 28px;
+    text-align: right;
+    position: absolute;
+    top: 792px;
+    left: 1493px;
+    right: 111px;
+    bottom: 160px;
+  }
+  .subtitle {
+    height: 87px;
+    width: 546px;
+    opacity: 0.8;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 18px;
+    letter-spacing: 0;
+    line-height: 29px;
+    position: absolute;
+    top: 271px;
+    left: 117px;
+    bottom: 622px;
+    right: 1257px;
+  }
+
+  .newcases {
+    height: 86px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 73px;
+    font-weight: 100;
+    letter-spacing: 0;
+    line-height: 86px;
+    position: absolute;
+    top: 438px;
+    left: 113px;
+    right: 1561px;
+    bottom: 456px;
+  }
+
+  .newcasestoday {
+    height: 21px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: 541px;
+    left: 117px;
+    right: 1557px;
+    bottom: 418px;
+  }
+
+  .closedcases {
+    height: 86px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 73px;
+    font-weight: 100;
+    letter-spacing: 0;
+    line-height: 86px;
+    position: absolute;
+    top: 438px;
+    left: 396px;
+    right: 1278px;
+    bottom: 456px;
+  }
+
+  .closedcasessub {
+    height: 21px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: 541px;
+    left: 400px;
+    right: 1274px;
+    bottom: 418px;
+  }
+
+  .totalcases {
+    height: 86px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 73px;
+    font-weight: 100;
+    letter-spacing: 0;
+    line-height: 86px;
+    top: 642px;
+    left: 113px;
+    bottom: 252px;
+    right: 1561px;
+    position: absolute;
+
+
+  }
+
+  .totalsub {
+    height: 21px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: 745px;
+    left: 117px;
+    bottom: 214px;
+    right: 1557px;
+  }
+
+  .deaths {
+    height: 86px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 73px;
+    font-weight: 100;
+    letter-spacing: 0;
+    line-height: 86px;
+    position: absolute;
+    top: 642px;
+    left: 396px;
+    right: 1278px;
+    bottom: 252px;
+  }
+
+  .deathsub {
+    height: 21px;
+    width: 246px;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: 745px;
+    left: 400px;
+    bottom: 213px;
+    right: 1274px;
+  }
+
+  .secondtitle {
+    height: 70px;
+    width: 586px;
+    color: #337ADB;
+    font-family: Roboto;
+    font-size: 37px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 70px;
+    position: absolute;
+    top: 146px;
+    left: 970px;
+    bottom: 764px;
+    right: 364px;
+  }
+
+  .bottomtitle {
+    height: 29px;
+    width: 467px;
+    color: #383838;
+    font-family: Roboto;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 29px;
+    top: 918px;
+    left: 970px;
+    right: 483px;
+    bottom: 33px;
+    position: absolute;
+  }
+
+  .website-by {
+    height: 29px;
+    width: 258px;
+    color: #383838;
+    font-family: Roboto;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 29px;
+    text-align: right;
+    position: absolute;
+    top: 918px;
+    left: 1506px;
+    bottom: 33px;
+    right: 156px;
+  }
+  .logo {
+    height: 16px;
+    width: 28px;
+    position: absolute;
+    top: 924px;
+    left: 1772px;
+  }
+  

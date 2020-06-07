@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+<!---<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"--->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="\static\js\java.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+<link rel="stylesheet" href="static\css\style.css?q=1280549780">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Greek Covid Update</title>
+</head>
+<body>
+ 
+<div class="row animated fadeIn delay-1s">
+  <canvas  id="myChart"></canvas>
+
+<script>
+   var labelsVar= {{graphdata_for_dates|safe}};
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: labelsVar,
+        datasets: [{
+            backgroundColor: 'rgba(51, 122, 219, 0.1)', 
+            label: 'Κρούσματα Covid-19 (Ελλάδα)',
+            borderColor: 'rgb(51, 122, 219)',
+            data: {{graphdata_for_cases}}
+        }, {
+            backgroundColor: 'rgba(255,0,0, 0.1)',
+            label: 'Θάνατοι από Covid-19 (Ελλάδα)',            
+            borderColor: 'rgb(219, 88, 51)',
+            data: {{graphdata_for_deaths}}
+        }, {
+            backgroundColor: 'rgba(101, 219, 51, 0.1',
+            label: 'Κλειστές περιπτώσεις Covid-19 (Ελλάδα)',
+            borderColor: 'rgb(101, 219, 51)',
+            
+            data: {{graphdata_for_closed}}
+        }]
+    },
+     //{{ graphdata_for_cases }}
+    // Configuration options go here
+    options: {}
+});
+</script>
+
+<div class="container">
+  <span class="title">Ενημέρωση COVID-19<br>
+    για την Ελλάδα</span>
+  <div class="rectangleleft"></div>
+  <span class="datasrc animated fadeIn delay-1s">* Δεδομένα απο covid19api.com</span>
+  <span class="subtitle animated fadeIn delay-1s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</span>
+  <span class="newcases animated animated fadeIn delay-1s">{{ greekcases.Newcases }}</span>
+  <span class="newcasestoday animated fadeIn delay-1s">ΝΕΑ ΚΡΟΥΣΜΑΤΑ ΣΗΜΕΡΑ</span>
+  <span class="closedcases animated fadeIn delay-1s">{{greekcases.TotalRecovered}}</span>
+  <span class="closedcasessub animated fadeIn delay-1s">ΑΝΑΡΩΣΑΝ</span>
+  <span class="totalcases animated fadeIn delay-1s">{{greekcases.TotalConfirmed}}</span>
+  <span class="totalsub animated fadeIn delay-1s">ΣΥΝΟΛΙΚΑ ΚΡΟΥΣΜΑΤΑ</span>
+  <span class="deaths animated fadeIn delay-1s">{{greekcases.TotalDeaths}}</span>
+  <span class="deathsub animated fadeIn delay-1s">ΘΑΝΑΤΟΙ</span>
+  <span class="secondtitle animated fadeIn delay-1s">Αναλυτικά μέσα στον χρόνο</span>
+  <span class="bottomtitle animated fadeIn delay-1s">COVID - 19 Greeece</span>
+  <span class="website-by">Website by</span>
+  <a href="mailto:mike.michalo@gmail.com"><img class="logo animated fadeIn delay-1s" src={{ img }}></a>
+</div>
+</div>
+</body>
+</html>
