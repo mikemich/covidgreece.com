@@ -41,7 +41,7 @@ def index():
         'TotalRecovered': r['Countries'][yey]['TotalRecovered'],
         'Newcases' :r['Countries'][yey]['NewConfirmed']
         }
-    #===================================================================
+    #===================================================================Tina<3
     
     urlgreece = 'https://api.covid19api.com/country/greece'
     gr = requests.get(urlgreece).json()
