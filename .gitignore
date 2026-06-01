@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments (a Windows venv was committed in the original project)
+venv/
+.venv/
+env/
+COVID-GREECE/Scripts/
+COVID-GREECE/Lib/
+COVID-GREECE/Include/
+pyvenv.cfg
