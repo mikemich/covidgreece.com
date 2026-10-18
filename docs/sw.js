@@ -2,7 +2,7 @@
 // deploy or data refresh shows up immediately, falling back to the cache when
 // offline. Fonts and the vendored Chart.js never change, so they are served
 // cache-first.
-const VERSION = 'v2';
+const VERSION = 'v3';
 const SHELL = `covidgreece-shell-${VERSION}`;
 const DATA = `covidgreece-data-${VERSION}`;
 

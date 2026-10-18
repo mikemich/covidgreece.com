@@ -66,6 +66,17 @@ WEEKLY_FIELDS = OrderedDict(
     ]
 )
 
+# Per-capita comparison metrics: output key -> OWID column. Each one has a
+# latest value per country and a weekly time series for the trend chart.
+COMPARE_METRICS = OrderedDict(
+    [
+        ("deaths_per_million", "total_deaths_per_million"),
+        ("cases_per_million", "total_cases_per_million"),
+        ("fully_vaccinated", "people_fully_vaccinated_per_hundred"),
+        ("excess_per_million", "excess_mortality_cumulative_per_million"),
+    ]
+)
+
 # Fields that are rates (rounded to 2 decimals) rather than counts.
 RATE_FIELDS = {
     "vaccinated",
@@ -314,11 +325,14 @@ def build_greece(rows: list[dict]) -> dict:
     return {"country": COUNTRY, "summary": summary, "waves": waves, "series": series}
 
 
-def build_compare(by_country: dict[str, list[dict]]) -> dict:
-    """Latest per-capita indicators plus deaths-per-million over time."""
+def build_compare(by_country: dict[str, list[dict]], weeks_axis: list[str]) -> dict:
+    """Latest per-capita indicators plus a weekly series for every metric.
+
+    All series share ``weeks_axis`` (the Greek reporting weeks) so the front
+    end can plot any metric for any country without realigning dates.
+    """
     countries = []
-    timeline: dict[str, list] = {}
-    weeks_axis: list[str] | None = None
+    series: dict[str, dict[str, list]] = {metric: {} for metric in COMPARE_METRICS}
     for name in COMPARE:
         rows = by_country.get(name) or []
         if not rows:
@@ -346,17 +360,17 @@ def build_compare(by_country: dict[str, list[dict]]) -> dict:
             }
         )
 
-        weekly: OrderedDict[str, float | None] = OrderedDict()
+        weekly: dict[str, dict[str, float]] = {metric: {} for metric in COMPARE_METRICS}
         for row in rows:
             key = week_ending(date.fromisoformat(row["date"])).isoformat()
-            value = to_float(row.get("total_deaths_per_million"))
-            if value is not None:
-                weekly[key] = round(value, 1)
-        if weeks_axis is None:
-            weeks_axis = [k for k in weekly if weekly[k] and weekly[k] > 0]
-        timeline[name] = [weekly.get(k) for k in weeks_axis]
+            for metric, column in COMPARE_METRICS.items():
+                value = to_float(row.get(column))
+                if value is not None:
+                    weekly[metric][key] = round(value, 1)
+        for metric in COMPARE_METRICS:
+            series[metric][name] = [weekly[metric].get(k) for k in weeks_axis]
 
-    return {"countries": countries, "weeks": weeks_axis or [], "deaths_per_million": timeline}
+    return {"countries": countries, "weeks": weeks_axis, "series": series}
 
 
 # --------------------------------------------------------------------------
@@ -440,7 +454,7 @@ def write_json(path: Path, payload: dict) -> None:
 def build(csv_path: Path, out_dir: Path = OUT_DIR, today: date | None = None) -> dict:
     by_country = read_rows(csv_path, set(COMPARE) | {COUNTRY})
     greece = build_greece(by_country[COUNTRY])
-    compare = build_compare(by_country)
+    compare = build_compare(by_country, greece["series"]["weeks"])
     warnings = validate(greece, compare)
 
     meta = {

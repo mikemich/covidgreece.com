@@ -162,7 +162,12 @@ def test_build_end_to_end(tmp_path):
 
     names = [c["name"] for c in compare["countries"]]
     assert names == ["Greece", "Italy"]  # unknown countries are ignored
-    assert set(compare["deaths_per_million"]) == {"Greece", "Italy"}
+    assert set(compare["series"]) == set(bd.COMPARE_METRICS)
+    for metric, by_country in compare["series"].items():
+        assert set(by_country) == {"Greece", "Italy"}, metric
+        assert all(len(values) == len(compare["weeks"]) for values in by_country.values())
+    assert compare["weeks"] == series["weeks"]
+    assert compare["series"]["deaths_per_million"]["Greece"][-1] is not None
     assert result["warnings"] == []
 
 

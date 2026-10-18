@@ -260,8 +260,12 @@ function setupControls() {
       if (key === 'range') focus = null;
       syncControls();
       syncUrl();
-      if (key === 'compare') builders.compareBar?.();
-      else builders.main?.();
+      if (key === 'compare') {
+        builders.compareBar?.();
+        builders.compareLine?.();
+      } else {
+        builders.main?.();
+      }
     });
   });
   $('#log-toggle').addEventListener('change', (event) => {
@@ -420,14 +424,25 @@ function buildCompareBar(canvas) {
 }
 
 function buildCompareLine(canvas) {
-  const { weeks, deaths_per_million: series } = data.compare;
-  canvas.setAttribute('aria-label', t(state.lang, 'compare.trend'));
+  const key = state.compare;
+  const isPct = key === 'fully_vaccinated';
+  const title = t(state.lang, `compare.trend.${key}`);
+  $('#compare-trend-title').textContent = title;
+  canvas.setAttribute('aria-label', title);
+
+  // drop countries without data for this metric, then trim empty weeks
+  const entries = Object.entries(data.compare.series[key] || {}).filter(([, values]) =>
+    values.some((v) => v !== null),
+  );
+  const { labels, cut } = span(data.compare.weeks, ...entries.map(([, values]) => values));
   return charts.compareLine(canvas, {
     ...timeFormatters(),
-    labels: weeks,
-    series: Object.entries(series).map(([name, values]) => ({
+    labels,
+    formatValue: (v) => (isPct ? fmt.pct(v) : fmt.n(Math.round(v))),
+    formatAxis: (v) => (isPct ? `${v}%` : fmt.compact(v)),
+    series: entries.map(([name, values]) => ({
       label: countryName(name),
-      values,
+      values: cut(values),
       highlight: name === 'Greece',
       dashed: name === 'European Union (27)',
     })),
