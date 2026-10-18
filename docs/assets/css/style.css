@@ -88,6 +88,7 @@ img, svg, canvas { display: block; max-width: 100%; }
 /* scroll-triggered entrance (replaces the original animate.css fadeIn) */
 .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
 .js .reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.revealed { transition: none; }
 
 /* ---------- hero: the original split layout ---------- */
 .hero {

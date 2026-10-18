@@ -113,13 +113,19 @@ function whenVisible(el, callback) {
 }
 
 function setupReveal() {
-  $$('.reveal:not(.is-visible), .wave:not(.is-visible)').forEach((el) => whenVisible(el, () => el.classList.add('is-visible')));
+  $$('.reveal:not(.is-visible), .wave:not(.is-visible)').forEach((el) =>
+    whenVisible(el, () => {
+      el.classList.add('is-visible');
+      // Drop the entrance transform once it has played: a lingering
+      // transformed layer can stop Safari from repainting charts inside it.
+      setTimeout(() => el.classList.add('revealed'), 1200);
+    }),
+  );
 }
 
 /** Register a chart builder; it runs when its canvas first becomes visible. */
 function registerChart(name, canvas, build) {
   builders[name] = () => {
-    instances[name]?.destroy();
     instances[name] = build(canvas);
   };
   whenVisible(canvas, () => {

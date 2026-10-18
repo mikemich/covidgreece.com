@@ -83,6 +83,24 @@ const markers = {
 
 Chart.register(background, markers);
 
+/**
+ * Draw a chart, updating the existing instance on this canvas when there is
+ * one. Updating in place (instead of destroy + new Chart) keeps the same
+ * canvas backing store, which Safari reliably repaints, and lets Chart.js
+ * animate between states.
+ */
+function render(canvas, config) {
+  const existing = Chart.getChart(canvas);
+  if (existing && existing.config.type === config.type) {
+    existing.data = config.data;
+    existing.options = config.options;
+    existing.update();
+    return existing;
+  }
+  existing?.destroy();
+  return new Chart(canvas, config);
+}
+
 function monthTick(labels, formatDate) {
   return function tick(value) {
     const label = labels[value];
@@ -147,7 +165,7 @@ export function mainChart(canvas, cfg) {
       tension: 0.3,
     });
   }
-  return new Chart(canvas, { type: 'line', data: { labels: cfg.labels, datasets }, options });
+  return render(canvas, { type: 'line', data: { labels: cfg.labels, datasets }, options });
 }
 
 /** Vaccination coverage over time (three lines, percent of population). */
@@ -174,7 +192,7 @@ export function vaxChart(canvas, cfg) {
     spanGaps: true,
     tension: 0.3,
   }));
-  return new Chart(canvas, { type: 'line', data: { labels: cfg.labels, datasets }, options });
+  return render(canvas, { type: 'line', data: { labels: cfg.labels, datasets }, options });
 }
 
 /** Weekly hospital and ICU admissions on two axes. */
@@ -218,7 +236,7 @@ export function healthChart(canvas, cfg) {
       yAxisID: 'y1',
     },
   ];
-  return new Chart(canvas, { data: { labels: cfg.labels, datasets }, options });
+  return render(canvas, { type: 'bar', data: { labels: cfg.labels, datasets }, options });
 }
 
 /** Excess mortality: bars above zero in red, below zero in blue. */
@@ -244,7 +262,7 @@ export function excessChart(canvas, cfg) {
       categoryPercentage: 0.9,
     },
   ];
-  return new Chart(canvas, { type: 'bar', data: { labels: cfg.labels, datasets }, options });
+  return render(canvas, { type: 'bar', data: { labels: cfg.labels, datasets }, options });
 }
 
 /** Horizontal ranking with the highlighted country in brand blue. */
@@ -266,7 +284,7 @@ export function compareBar(canvas, cfg) {
       barPercentage: 0.75,
     },
   ];
-  return new Chart(canvas, { type: 'bar', data: { labels: cfg.labels, datasets }, options });
+  return render(canvas, { type: 'bar', data: { labels: cfg.labels, datasets }, options });
 }
 
 /** Cumulative deaths per million: every country thin, Greece bold. */
@@ -294,5 +312,5 @@ export function compareLine(canvas, cfg) {
     tension: 0.2,
     order: s.highlight ? 0 : 1,
   }));
-  return new Chart(canvas, { type: 'line', data: { labels: cfg.labels, datasets }, options });
+  return render(canvas, { type: 'line', data: { labels: cfg.labels, datasets }, options });
 }
