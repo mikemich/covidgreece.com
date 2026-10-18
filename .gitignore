@@ -1,12 +1,19 @@
 # Python
 __pycache__/
 *.py[cod]
+.pytest_cache/
+.ruff_cache/
 
-# Virtual environments (a Windows venv was committed in the original project)
+# Virtual environments
 venv/
 .venv/
 env/
-COVID-GREECE/Scripts/
-COVID-GREECE/Lib/
-COVID-GREECE/Include/
-pyvenv.cfg
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

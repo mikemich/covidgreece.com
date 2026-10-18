@@ -1,0 +1,14 @@
+{
+  "name": "covidgreece",
+  "version": "2.0.0",
+  "private": true,
+  "description": "COVID-19 dashboard for Greece — static GitHub Pages site with an automated data pipeline",
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"tests/js/*.test.js\"",
+    "serve": "npx --yes http-server docs -p 8080 -c-1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "_comment": "Hand-curated milestones shown on the timeline and as chart markers. Keep each entry sourced.",
+  "milestones": [
+    {
+      "date": "2020-02-26",
+      "el": "Επιβεβαιώνεται το πρώτο κρούσμα στην Ελλάδα, στη Θεσσαλονίκη.",
+      "en": "First confirmed case in Greece, in Thessaloniki.",
+      "source": "https://www.amna.gr/en/article/434175/First-coronavirus-case-confirmed-in-Greece"
+    },
+    {
+      "date": "2020-03-11",
+      "el": "Ο ΠΟΥ χαρακτηρίζει την COVID-19 πανδημία.",
+      "en": "The WHO declares COVID-19 a pandemic.",
+      "source": "https://www.who.int/director-general/speeches/detail/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020"
+    },
+    {
+      "date": "2020-03-12",
+      "el": "Καταγράφεται ο πρώτος θάνατος από COVID-19 στην Ελλάδα.",
+      "en": "Greece records its first COVID-19 death.",
+      "source": "https://amna.gr/en/article/438643/Greece-confirms-first-death-from-COVID-19"
+    },
+    {
+      "date": "2020-03-23",
+      "el": "Ξεκινά το πρώτο γενικό lockdown με περιορισμό κυκλοφορίας.",
+      "en": "The first nationwide lockdown with movement restrictions begins.",
+      "source": "https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Greece"
+    },
+    {
+      "date": "2020-05-04",
+      "el": "Αρχίζει η σταδιακή άρση των μέτρων.",
+      "en": "Gradual lifting of the lockdown begins.",
+      "source": "https://www.institutmontaigne.org/en/expressions/europe-versus-coronavirus-greece-unexpected-model"
+    },
+    {
+      "date": "2020-11-07",
+      "el": "Ξεκινά το δεύτερο γενικό lockdown λόγω πίεσης στο ΕΣΥ.",
+      "en": "The second nationwide lockdown begins as hospitals come under pressure.",
+      "source": "https://news.gtp.gr/2020/11/26/greece-extends-second-lockdown-until-december-7/"
+    },
+    {
+      "date": "2020-12-27",
+      "el": "Γίνονται οι πρώτοι εμβολιασμοί κατά της COVID-19.",
+      "en": "The first COVID-19 vaccinations are given.",
+      "source": "https://greekcitytimes.com/2020/12/27/prime-minister-mistotakis-one-of-the-first-to-receive-coronavirus-vaccine-tomorrow/amp/"
+    },
+    {
+      "date": "2023-05-05",
+      "el": "Ο ΠΟΥ κηρύσσει τη λήξη της παγκόσμιας κατάστασης έκτακτης ανάγκης.",
+      "en": "The WHO declares the end of the global health emergency.",
+      "source": "https://www.who.int/news/item/05-05-2023-statement-on-the-fifteenth-meeting-of-the-international-health-regulations-(2005)-emergency-committee-regarding-the-coronavirus-disease-(covid-19)-pandemic"
+    }
+  ]
+}

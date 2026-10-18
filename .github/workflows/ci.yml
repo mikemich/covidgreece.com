@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Data pipeline (lint + tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check scripts tests
+      - run: ruff format --check scripts tests
+      - run: pytest
+
+  web:
+    name: Front-end (unit tests + data sanity)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Bundled data parses and is complete
+        run: |
+          node -e '
+            const fs = require("fs");
+            const g = JSON.parse(fs.readFileSync("docs/data/greece.json"));
+            const c = JSON.parse(fs.readFileSync("docs/data/compare.json"));
+            JSON.parse(fs.readFileSync("docs/data/milestones.json"));
+            const lengths = new Set(Object.values(g.series).map((s) => s.length));
+            if (lengths.size !== 1) throw new Error("series lengths differ");
+            if (!c.countries.some((x) => x.name === "Greece")) throw new Error("Greece missing");
+            console.log("data OK, latest week", g.summary.week);
+          '

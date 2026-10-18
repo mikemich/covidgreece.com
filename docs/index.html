@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COVID-19 Ελλάδα · Ενημέρωση & στατιστικά</title>
+  <meta name="description" content="Διαδραστικός πίνακας για την πορεία της COVID-19 στην Ελλάδα: κρούσματα, θάνατοι, κύματα, εμβολιασμοί και σύγκριση με την Ευρώπη.">
+  <meta name="theme-color" content="#337ADB">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://mikemich.github.io/covidgreece.com/">
+
+  <!-- Open Graph / social cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="COVID-19 Greece · Ενημέρωση COVID-19 για την Ελλάδα">
+  <meta property="og:description" content="Cases, deaths, waves, vaccinations and a comparison with Europe — refreshed automatically every week.">
+  <meta property="og:url" content="https://mikemich.github.io/covidgreece.com/">
+  <meta property="og:image" content="https://mikemich.github.io/covidgreece.com/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preload" href="data/greece.json" as="fetch" crossorigin>
+
+  <!-- Apply the saved theme before first paint to avoid a flash -->
+  <script>
+    document.documentElement.classList.add('js');
+    try {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    } catch (e) {}
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "COVID-19 in Greece — weekly cases, deaths and vaccinations",
+    "description": "Weekly COVID-19 indicators for Greece derived from the Our World in Data COVID-19 dataset (WHO, ECDC and national sources).",
+    "url": "https://mikemich.github.io/covidgreece.com/",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "creator": { "@type": "Person", "name": "mikemich", "url": "https://github.com/mikemich" },
+    "isBasedOn": "https://ourworldindata.org/coronavirus",
+    "spatialCoverage": "Greece",
+    "temporalCoverage": "2020-02/..",
+    "distribution": [
+      { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://mikemich.github.io/covidgreece.com/data/greece.json" }
+    ]
+  }
+  </script>
+
+  <script defer src="assets/vendor/chart.umd.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">Μετάβαση στο περιεχόμενο</a>
+
+<!-- ===== Hero: the original two-panel design ===== -->
+<header class="hero" id="top">
+  <div class="toolbar">
+    <button class="icon-btn" id="lang-toggle" type="button" data-i18n="action.lang" data-i18n-attr="aria-label:action.langLabel">English</button>
+    <button class="icon-btn" id="theme-toggle" type="button" data-i18n-attr="aria-label:action.theme;title:action.theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+    </button>
+  </div>
+
+
+  <!-- Left: blue stats panel -->
+  <section class="covid-panel" aria-labelledby="hero-title">
+    <img class="virus-deco" src="assets/img/virus.svg" alt="" aria-hidden="true">
+    <div class="panel-inner">
+      <h1 class="panel-title reveal" id="hero-title" data-i18n="hero.title">Ενημέρωση COVID-19<br>για την Ελλάδα</h1>
+      <p class="subtitle reveal" data-i18n="hero.subtitle">
+        Στοιχεία για την πορεία της πανδημίας στην Ελλάδα: κρούσματα, θάνατοι, εμβολιασμοί και η εξέλιξή τους μέσα στον χρόνο.
+      </p>
+
+      <div class="stats-grid reveal" aria-live="polite">
+        <div class="stat">
+          <div class="stat-number" data-stat="weekCases">–</div>
+          <div class="stat-label" data-i18n="stat.weekCases">ΝΕΑ ΚΡΟΥΣΜΑΤΑ ΕΒΔΟΜΑΔΑΣ</div>
+          <div class="stat-trend" id="trend" hidden></div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-stat="vaccinated">–</div>
+          <div class="stat-label" data-i18n="stat.vaccinated">ΠΛΗΡΩΣ ΕΜΒΟΛΙΑΣΜΕΝΟΙ</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-stat="totalCases">–</div>
+          <div class="stat-label" data-i18n="stat.totalCases">ΣΥΝΟΛΙΚΑ ΚΡΟΥΣΜΑΤΑ</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" data-stat="totalDeaths">–</div>
+          <div class="stat-label" data-i18n="stat.totalDeaths">ΘΑΝΑΤΟΙ</div>
+        </div>
+      </div>
+
+      <p class="updated reveal" id="updated"></p>
+    </div>
+  </section>
+
+  <!-- Right: chart panel -->
+  <section class="data-panel" aria-labelledby="chart-title">
+    <div class="panel-inner">
+      <h2 class="secondtitle reveal" id="chart-title" data-i18n="chart.title">Αναλυτικά μέσα στον χρόνο</h2>
+
+      <div class="controls reveal" role="toolbar" aria-label="Chart options">
+        <div class="segmented" role="group" data-i18n-attr="aria-label:chart.metric" data-control="metric">
+          <button type="button" data-value="cases" data-i18n="chart.cases">Κρούσματα</button>
+          <button type="button" data-value="deaths" data-i18n="chart.deaths">Θάνατοι</button>
+        </div>
+        <div class="segmented" role="group" data-i18n-attr="aria-label:chart.mode" data-control="mode">
+          <button type="button" data-value="weekly" data-i18n="chart.weekly">Εβδομαδιαία</button>
+          <button type="button" data-value="cumulative" data-i18n="chart.cumulative">Σωρευτικά</button>
+        </div>
+        <div class="segmented" role="group" data-i18n-attr="aria-label:chart.range" data-control="range">
+          <button type="button" data-value="6m">6M</button>
+          <button type="button" data-value="1y">1Y</button>
+          <button type="button" data-value="2y">2Y</button>
+          <button type="button" data-value="all" data-i18n="chart.all">Όλα</button>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="log-toggle">
+          <span data-i18n="chart.log">Λογαριθμική</span>
+        </label>
+      </div>
+
+      <div class="chart-wrap reveal">
+        <canvas id="main-chart" role="img"></canvas>
+        <div class="chart-status" id="chart-status" role="status"></div>
+      </div>
+
+      <details class="data-table">
+        <summary data-i18n="chart.table">Πίνακας δεδομένων (τελευταίες 12 εβδομάδες)</summary>
+        <div class="table-scroll"><table id="main-table"></table></div>
+      </details>
+
+      <div class="chart-footer">
+        <div class="actions">
+          <button class="text-btn" type="button" id="download-png" data-i18n="action.png">Λήψη PNG</button>
+          <button class="text-btn" type="button" id="download-csv" data-i18n="action.csv">Λήψη CSV</button>
+          <button class="text-btn" type="button" id="share" data-i18n="action.share">Κοινοποίηση</button>
+        </div>
+        <p class="datasrc" id="datasrc">* Δεδομένα από Our World in Data</p>
+      </div>
+
+      <div class="footer-row">
+        <span class="bottomtitle" data-i18n="footer.brand">COVID&nbsp;-&nbsp;19 Greece</span>
+        <span class="website-by">
+          <span data-i18n="footer.by">Website by</span>
+          <a href="mailto:mike.michalo@gmail.com" aria-label="Email Mike">
+            <img class="logo" src="assets/img/logo.svg" alt="" width="28" height="18">
+          </a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <a class="scroll-cue" href="#kpis">
+    <span data-i18n="scroll">Περισσότερα</span>
+    <img src="assets/img/arrow.svg" alt="" width="18" height="11">
+  </a>
+</header>
+
+<main id="main">
+
+  <!-- ===== Key indicators ===== -->
+  <section class="section" id="kpis" aria-labelledby="kpi-title">
+    <div class="container">
+      <h2 class="section-title reveal" id="kpi-title" data-i18n="kpi.title">Βασικοί δείκτες</h2>
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== Waves ===== -->
+  <section class="section section-alt" id="waves" aria-labelledby="waves-title">
+    <div class="container">
+      <h2 class="section-title reveal" id="waves-title" data-i18n="waves.title">Τα κύματα της πανδημίας</h2>
+      <p class="section-lead reveal" data-i18n="waves.lead"></p>
+      <ol class="wave-list" id="wave-list"></ol>
+    </div>
+  </section>
+
+  <!-- ===== Vaccination ===== -->
+  <section class="section" id="vaccination" aria-labelledby="vax-title">
+    <div class="container">
+      <h2 class="section-title reveal" id="vax-title" data-i18n="vax.title">Εμβολιασμός</h2>
+      <p class="section-lead reveal" id="vax-lead"></p>
+      <div class="split">
+        <div class="vax-bars reveal" id="vax-bars"></div>
+        <div class="card chart-card reveal">
+          <div class="chart-wrap chart-sm"><canvas id="vax-chart" role="img"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Hospitals + excess mortality ===== -->
+  <section class="section section-alt" id="impact">
+    <div class="container two-col">
+      <article class="card chart-card reveal" aria-labelledby="health-title">
+        <h2 class="card-title" id="health-title" data-i18n="health.title">Πίεση στο σύστημα υγείας</h2>
+        <p class="card-lead" data-i18n="health.lead"></p>
+        <div class="chart-wrap chart-sm"><canvas id="health-chart" role="img"></canvas></div>
+      </article>
+      <article class="card chart-card reveal" aria-labelledby="excess-title">
+        <h2 class="card-title" id="excess-title" data-i18n="excess.title">Υπερβάλλουσα θνησιμότητα</h2>
+        <p class="card-lead" data-i18n="excess.lead"></p>
+        <div class="chart-wrap chart-sm"><canvas id="excess-chart" role="img"></canvas></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== Europe comparison ===== -->
+  <section class="section" id="compare" aria-labelledby="compare-title">
+    <div class="container">
+      <h2 class="section-title reveal" id="compare-title" data-i18n="compare.title">Η Ελλάδα στην Ευρώπη</h2>
+      <p class="section-lead reveal" data-i18n="compare.lead"></p>
+      <div class="segmented segmented-wrap reveal" role="group" data-control="compare">
+        <button type="button" data-value="deaths_per_million" data-i18n="compare.deaths_per_million">Θάνατοι / εκατ.</button>
+        <button type="button" data-value="cases_per_million" data-i18n="compare.cases_per_million">Κρούσματα / εκατ.</button>
+        <button type="button" data-value="fully_vaccinated" data-i18n="compare.fully_vaccinated">Πλήρως εμβολιασμένοι %</button>
+        <button type="button" data-value="excess_per_million" data-i18n="compare.excess_per_million">Υπερβάλλοντες θάνατοι / εκατ.</button>
+      </div>
+      <div class="two-col">
+        <div class="card chart-card reveal">
+          <div class="chart-wrap chart-md"><canvas id="compare-bar" role="img"></canvas></div>
+        </div>
+        <div class="card chart-card reveal">
+          <h3 class="card-title small" data-i18n="compare.trend">Σωρευτικοί θάνατοι ανά εκατομμύριο</h3>
+          <div class="chart-wrap chart-md"><canvas id="compare-line" role="img"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Timeline ===== -->
+  <section class="section section-alt" id="timeline" aria-labelledby="timeline-title">
+    <div class="container narrow">
+      <h2 class="section-title reveal" id="timeline-title" data-i18n="timeline.title">Χρονολόγιο</h2>
+      <ol class="timeline" id="timeline-list"></ol>
+    </div>
+  </section>
+
+  <!-- ===== About ===== -->
+  <section class="section" id="about" aria-labelledby="about-title">
+    <div class="container narrow">
+      <h2 class="section-title reveal" id="about-title" data-i18n="about.title">Σχετικά με τα δεδομένα</h2>
+      <p class="about-text reveal" data-i18n="about.body"></p>
+      <p class="about-links reveal">
+        <a href="https://github.com/mikemich/covidgreece.com" data-i18n="about.code">Πηγαίος κώδικας στο GitHub</a>
+        · <a href="data/greece.json">greece.json</a>
+        · <a href="data/compare.json">compare.json</a>
+      </p>
+      <p class="disclaimer" data-i18n="about.disclaimer"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="bottomtitle" href="#top" data-i18n="footer.brand">COVID&nbsp;-&nbsp;19 Greece</a>
+    <span class="website-by">
+      <span data-i18n="footer.by">Website by</span>
+      <a href="mailto:mike.michalo@gmail.com" aria-label="Email Mike">
+        <img class="logo logo-light" src="assets/img/logo.svg" alt="" width="28" height="18">
+      </a>
+      · <a href="https://github.com/mikemich">GitHub</a>
+    </span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript><p class="noscript">Ο ιστότοπος χρειάζεται JavaScript για να εμφανίσει τα γραφήματα. / This site needs JavaScript to draw its charts.</p></noscript>
+</body>
+</html>
